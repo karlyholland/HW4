@@ -7,6 +7,7 @@ Partial Class _Default
     'www.dreamincode.net/forums/topic/237228-looping-issues-using-a-grid-for-mortgage-calculator-amortization/  
 
     Protected Sub btnCalcPay_Click(sender As Object, e As EventArgs) Handles btnCalcPay.Click
+
         'Declare variables for each field
         Dim wageAmount As Double
         Dim hoursWorked As Double
@@ -41,6 +42,18 @@ Partial Class _Default
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         tbwageAmount.Focus()
+    End Sub
+
+    Protected Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        tbwageAmount.Text = ""
+        tbhoursWorked.Text = ""
+        tbpreTax.Text = ""
+        tbafterTax.Text = ""
+        lblNetPay.Text = ""
+    End Sub
+
+    Protected Sub tbafterTax_TextChanged(sender As Object, e As EventArgs)
+
     End Sub
 
 End Class
