@@ -9,33 +9,37 @@ Inherits="_Default" %>
 <body> 
     <form id="form1" runat="server"> 
     <div>      
-    Karly's Mortgage Calculator 
+    Estimate Net Weekly Pay
          
-        <br /><br />       
-        Loan Amount:<asp:TextBox ID="tbLoanAmt" runat="server" ></asp:TextBox>                    
-        <asp:RequiredFieldValidator ID="rfvLoanAmount" runat="server" ControlToValidate="tbLoanAmt" ErrorMessage="** Please enter a loan amount."></asp:RequiredFieldValidator>
-        <br /><br />                
-        Annual Interest %: <asp:TextBox ID="tbAnnualInterest" runat="server" ></asp:TextBox>          
-        <asp:RequiredFieldValidator ID="rfvAnnualInterest" runat="server" ControlToValidate="tbAnnualInterest" ErrorMessage="** Please enter an interest amount."></asp:RequiredFieldValidator>
-        <br /><br /> 
- 
-        Loan Term (Yrs): <asp:TextBox ID="tbLoanTerm" runat="server" ></asp:TextBox>          
-        <asp:RequiredFieldValidator ID="rfvLoanTerm" runat="server" ControlToValidate="tbLoanTerm" ErrorMessage="** Please enter a loan term in years."></asp:RequiredFieldValidator>
-        <br /><br /> 
- 
-        <asp:Button ID="btnCalcPmt" runat="server" Text="Calculate" />          
-        <br /><br /> 
+        <br />
+            <p>Please complete the fields below to have your estimated net pay calculated for you.</p>
         
-        <% If Not IsPostBack Then%>
-            <p>Welcome to my mortgage calculator.  Please complete the fields above to have your monthly payment and loan calculated for you.</p>
-        <% Else%>
-            <br />
-
-        Monthly Payment: &nbsp; <span class="bold"></span><asp:Label ID="lblMonthlyPmt" runat="server"></asp:Label> 
-         
-        <br /><br />          
-        <asp:GridView ID="loanGridView" runat="server" />  
-        <% End If%>            
+        <br />       
+        Hourly Wage: <asp:TextBox ID="tbwageAmount" runat="server" style="margin-left: 86px" Width="128px" ></asp:TextBox>                    
+        <asp:RequiredFieldValidator ID="rfvwageAmount" runat="server" ControlToValidate="tbwageAmount" ErrorMessage=
+            "** Please enter your hourly wage in dollars."></asp:RequiredFieldValidator>
+        
+        <br /><br />                
+        Hours Worked This Week: <asp:TextBox ID="tbhoursWorked" runat="server" Width="128px" style="margin-left: 3px" ></asp:TextBox>          
+        <asp:RequiredFieldValidator ID="rfvhoursWorked" runat="server" ControlToValidate="tbhoursWorked" ErrorMessage=
+            "** Please enter the number of hours worked this week."></asp:RequiredFieldValidator>
+        
+        <br /><br /> 
+        Pre-Tax Deductions: <asp:TextBox ID="tbpreTax" runat="server" style="margin-left: 41px" Width="128px" ></asp:TextBox>          
+        <asp:RequiredFieldValidator ID="rfvpreTax" runat="server" ControlToValidate="tbpreTax" ErrorMessage=
+            "** Please enter any pre-tax deductions. If no deductions, please enter '0'."></asp:RequiredFieldValidator>
+        
+        <br /><br /> 
+        After-Tax Deductions: <asp:TextBox ID="tbafterTax" runat="server" style="margin-left: 31px" Width="128px" ></asp:TextBox>          
+        <asp:RequiredFieldValidator ID="rfvafterTax" runat="server" ControlToValidate="tbafterTax" ErrorMessage=
+            "** Please enter any after-tax deductions. If no deductions, please enter '0'."></asp:RequiredFieldValidator>
+        
+        <br /><br /> 
+        <asp:Button ID="btnCalcPay" runat="server" Text="Calculate" style="margin-left: 174px" Width="128px" />          
+        
+        <br /><br />
+        Net Pay: &nbsp; <span class="bold"></span><asp:Label ID="lblNetPay" runat="server"></asp:Label> 
+       
         </div> 
     </form> 
 </body> 

@@ -5,90 +5,42 @@ Partial Class _Default
 
     'Adapted from the loan calculator found at  
     'www.dreamincode.net/forums/topic/237228-looping-issues-using-a-grid-for-mortgage-calculator-amortization/  
-    Protected Sub btnCalcPmt_Click(sender As Object, e As EventArgs) Handles btnCalcPmt.Click
-        'Declaring the Variables for each field. 
-        Dim loanAmount As Double
-        Dim annualRate As Double
-        Dim interestRate As Double
-        Dim term As Integer
-        Dim loanTerm As Integer
-        Dim monthlyPayment As Double
 
-        'This section is Declaring the Variables for Loan Amortization. 
-        Dim interestPaid As Double
-        Dim nBalance As Double
-        Dim principal As Double
+    Protected Sub btnCalcPay_Click(sender As Object, e As EventArgs) Handles btnCalcPay.Click
+        'Declare variables for each field
+        Dim wageAmount As Double
+        Dim hoursWorked As Double
+        Dim grossPay As Double
+        Dim preTax As Double
+        Dim afterTax As Double
+        Dim netPay As Double
 
-        'Declaring a table to hold the payment information. 
-        Dim table As DataTable = New DataTable("ParentTable")
-        Dim loanAmortTbl As DataTable = New DataTable("AmortizationTable")
-        Dim tRow As DataRow
+        'This Section Converts each input string to the appropriate variable assigned.
+        wageAmount = CDbl(tbwageAmount.Text)
+        hoursWorked = CDbl(tbhoursWorked.Text)
+        preTax = CDbl(tbpreTax.Text)
+        afterTax = CDbl(tbafterTax.Text)
 
-        'This section adds default values to the Variables.           interestPaid = 0.0 
+        'Format inputs to currency
+        tbwageAmount.Text = FormatCurrency(wageAmount)
+        tbpreTax.Text = FormatCurrency(preTax)
+        tbafterTax.Text = FormatCurrency(afterTax)
 
-        'This Section Converts each input string to the appropriate variable assigned. 
-        loanAmount = CDbl(tbLoanAmt.Text)
-        annualRate = CDbl(tbAnnualInterest.Text)
-        term = CDbl(tbLoanTerm.Text)
-        'This Section Formats the Loan Input to Currency. 
-        tbLoanAmt.Text = FormatCurrency(loanAmount)
+        'Multiply hourly wage by hours worked
+        grossPay = wageAmount * hoursWorked
 
-        'Converting the Annual Rate to a Monthly Rate by dividing 5.75% by 100 * 12 (months in a year) gives you 0.00479. 
-        interestRate = annualRate / (100 * 12)
+        If grossPay < 500 Then
+            netPay = (grossPay - preTax) * (1 - 0.18) - afterTax
+        Else : netPay = (grossPay - preTax) * (1 - 0.22) - afterTax
+        End If
 
-        'Converting the Years (Term) into Months (Loan Term) by Multipling the Years by 12.
-        loanTerm = term * 12
-
-        'Calculating the Monthly Payment using the Converted Interest Rate and Loan Term. 
-        monthlyPayment = loanAmount * interestRate / (1 - Math.Pow((1 + interestRate), (-loanTerm)))
-
-        'Displaying the Monthly Payment in the TextBox and converts the Variable to Currency. 
-        lblMonthlyPmt.Text = FormatCurrency(monthlyPayment)
-
-
-        'Adds Items to List Box, Formats them for Currency and Adds Pad Spacing for each item. 
-        loanAmortTbl.Columns.Add("Payment Number", System.Type.GetType("System.String"))
-        loanAmortTbl.Columns.Add("Payment Date", System.Type.GetType("System.String"))
-        loanAmortTbl.Columns.Add("Principal Paid", System.Type.GetType("System.String"))
-        loanAmortTbl.Columns.Add("Interest Paid", System.Type.GetType("System.String"))
-        loanAmortTbl.Columns.Add("New Balance", System.Type.GetType("System.String"))
-
-
-        'This section uses the for loop to display the Loan Balance and Interest Paid over the Term of the Loan. 
-        Dim counterStart As Integer
-        Dim pmtDate As DateTime
-
-        For counterStart = 1 To loanTerm
-
-            'Performs Calculations for Amortization of loan. 
-            interestPaid = loanAmount * interestRate
-            principal = monthlyPayment - interestPaid
-            nBalance = loanAmount - principal
-            loanAmount = nBalance
-            pmtDate = DateTime.Now.ToShortDateString
-            pmtDate = pmtDate.AddMonths(counterStart)
-
-            'Writes the data to a new row in the gridview. 
-            tRow = loanAmortTbl.NewRow()
-            tRow("Payment Number") = String.Format(counterStart)
-            tRow("Payment Date") = String.Format(pmtDate)
-            tRow("Principal Paid") = String.Format("{0:C}", principal)
-            ' String.Format("{0:C},principal) formats the variable "prinicpal" as currency (C). 
-            tRow("Interest Paid") = String.Format("{0:C}", interestPaid)
-            tRow("New Balance") = String.Format("{0:C}", nBalance)
-            loanAmortTbl.Rows.Add(tRow)
-
-            'Loops to next counterStart (Continues loop to requirements are met).
-        Next counterStart
-        loanGridView.DataSource = loanAmortTbl
-        loanGridView.DataBind()
+        'Display net pay and convert to cuurency
+        lblNetPay.Text = FormatCurrency(netPay)
 
     End Sub
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-
-        tbLoanAmt.Focus()
-
+        tbwageAmount.Focus()
     End Sub
 
 End Class
